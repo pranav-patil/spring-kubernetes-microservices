@@ -1,0 +1,47 @@
+
+server:
+  port: 8300
+
+spring:
+  application:
+    name: data-service
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: testdb
+    datasource:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:localhost;DB_CLOSE_ON_EXIT=FALSE
+      username: admin
+      password:
+  batch:
+    initialize-schema: always
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8302/eureka
+  instance:
+    hostname: localhost
+
+---
+spring:
+  profiles: production
+  data:
+    mongodb:
+      host: mongodb-service
+      port: 27017
+      database: testdb
+      username: appuser
+      password: test123
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8302/eureka
+  instance:
+    preferIpAddress: true
+

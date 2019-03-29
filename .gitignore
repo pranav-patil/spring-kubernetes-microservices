@@ -1,0 +1,23 @@
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Git
+.git
+.metadata
+
+# Maven
+target
+**/target
+**/.settings
+*.classpath
+*.project
+.m2/*
+**/MANIFEST.MF
+
+# Gradle
+.gradle
+**/out
+**/build/

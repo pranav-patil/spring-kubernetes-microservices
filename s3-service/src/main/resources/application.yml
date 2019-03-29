@@ -1,0 +1,46 @@
+
+server:
+  port: 8309
+
+spring:
+  application:
+    name: s3-service
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: testdb
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8302/eureka
+  instance:
+    hostname: localhost
+
+cloud:
+  minio:
+    endpoint: http://minio:9000
+    accessKey: minio
+    secretKey: minio123
+
+---
+spring:
+  profiles: production
+  data:
+    mongodb:
+      host: mongodb-service
+      port: 27017
+      database: testdb
+      username: appuser
+      password: test123
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8302/eureka
+  instance:
+    preferIpAddress: true
+

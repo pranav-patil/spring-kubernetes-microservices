@@ -1,0 +1,6 @@
+rootProject.name = 'spring-kube-services'
+
+include "discovery-service"
+include "s3-service"
+include "data-service"
+include "document-service"

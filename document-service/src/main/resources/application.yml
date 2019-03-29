@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: document-service
+
+server:
+  port: 8301
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8302/eureka
+  instance:
+    hostname: localhost
+
+feign:
+  hystrix:
+    enabled:  true
+
+hystrix:
+  shareSecurityContext: true
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+---
+spring:
+  profiles: production
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8302/eureka
+  instance:
+    preferIpAddress: true

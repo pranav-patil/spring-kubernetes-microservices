@@ -1,0 +1,96 @@
+version: '3.5'
+services:
+
+  mongodb-service:
+    container_name: mongodb-service
+    image: mongo:4.0
+    ports:
+      - "27017:27017"
+    networks:
+      - net
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: testdb
+    volumes:
+      - ./data-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#      - /tmp/data/mongo:/data/db
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    hostname: minio
+    volumes:
+      - data:/data
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server http://minio/data
+
+  discovery-service:
+    container_name: discovery-service
+    build: ./discovery-service
+    restart: always
+    ports:
+      - "8302:8302"
+    networks:
+      - net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  s3-service:
+    container_name: s3-service
+    build: ./s3-service
+    restart: always
+    depends_on:
+      - discovery-service
+    ports:
+      - "8309:8309"
+    networks:
+      - net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  data-service:
+    container_name: data-service
+    build: ./data-service
+    restart: always
+    depends_on:
+      - mongodb-service
+      - discovery-service
+    ports:
+      - "8300:8300"
+    networks:
+      - net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  document-service:
+    container_name: document-service
+    build: ./document-service
+    restart: always
+    depends_on:
+      - discovery-service
+      - s3-service
+      - data-service
+    ports:
+      - "8301:8301"
+    networks:
+      - net
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+networks:
+  net:
+    driver: bridge
