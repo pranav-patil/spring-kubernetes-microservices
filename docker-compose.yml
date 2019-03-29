@@ -18,17 +18,19 @@ services:
 #      - /tmp/data/mongo:/data/db
 
   minio-service:
-    container_name: minio
+    container_name: minio-service
     image: minio/minio
     ports:
       - "9000:9000"
-    hostname: minio
+    networks:
+      - net
+    restart: always
     volumes:
-      - data:/data/s3
+      - /var/data/minio/data:/data
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
-    command: server http://minio/data
+    command: minio server /data
 
   discovery-service:
     container_name: discovery-service
