@@ -17,7 +17,7 @@ services:
       - ./data-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 #      - /tmp/data/mongo:/data/db
 
-  minio:
+  minio-service:
     container_name: minio
     image: minio/minio
     ports:
