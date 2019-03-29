@@ -22,27 +22,27 @@ public class DealerStatementResource {
 
     public Mono<StatementDetail> findById(String id) {
         return this.statementRepository.findById(id)
-                                   .map(statement -> statementDetailMapper.mapToStockDetail(statement));
+                                   .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
     public Mono<StatementDetail> findByDocumentId(String name) {
         return this.statementRepository.findByDocumentId(name)
-                                   .map(statement -> statementDetailMapper.mapToStockDetail(statement));
+                                   .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
     public Flux<StatementDetail> findByPayerId(String name) {
         return this.statementRepository.findByPayerId(name)
-                                   .map(statement -> statementDetailMapper.mapToStockDetail(statement));
+                                   .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
     public Flux<StatementDetail> all() {
-        Flux<Statement> stocks = this.statementRepository.findAll();
-        return stocks.map(statementDetailMapper::mapToStockDetail);
+        Flux<Statement> statements = this.statementRepository.findAll();
+        return statements.map(statementDetailMapper::mapToStatementDetail);
     }
 
     public Mono<StatementDetail> add(StatementDetail statementDetail) {
-        Statement statement = statementDetailMapper.mapToStock(statementDetail);
+        Statement statement = statementDetailMapper.mapToStatement(statementDetail);
         return this.statementRepository.insert(statement)
-                                   .map(stk -> statementDetailMapper.mapToStockDetail(stk));
+                                   .map(stk -> statementDetailMapper.mapToStatementDetail(stk));
     }
 }

@@ -21,9 +21,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 @Configuration
 @EnableBatchProcessing
@@ -38,6 +44,8 @@ public class JobConfiguration {
     private SimpleJobLauncher jobLauncher;
     @Autowired
     private DealerStatementResource dealerStatementResource;
+
+    private static List<String> FILE_NAMES = Arrays.asList("Feb2019.pdf", "Jan2019.pdf", "Jan2019V1.pdf");
     private static Logger logger = LoggerFactory.getLogger(JobConfiguration.class);
 
     @Bean
@@ -74,15 +82,23 @@ public class JobConfiguration {
     @Bean
     public Step startStep() {
         return stepBuilderFactory.get("startStep")
-                .tasklet(addRandomStocksTasklet()).build();
+                .tasklet(addRandomStatementsTasklet()).build();
     }
 
     @Bean
-    public Tasklet addRandomStocksTasklet() {
+    public Tasklet addRandomStatementsTasklet() {
         return (contribution, chunkContext) -> {
             StatementDetail statementDetail = new StatementDetail();
             statementDetail.setDocumentId(RandomStringUtils.randomAlphabetic(10));
-            statementDetail.setDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+
+            Random random = new Random();
+            int randomInt = random.ints(0, FILE_NAMES.size()).findFirst().getAsInt();
+            statementDetail.setDocumentReference(FILE_NAMES.get(randomInt));
+            statementDetail.setPayerId("0040000002");
+
+            statementDetail.setRead(Boolean.FALSE);
+            LocalDate randomDate = getDatesBetween(LocalDate.of(2018, 4, 15), LocalDate.of(2019, 3, 15));
+            statementDetail.setDate(Date.from(randomDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             dealerStatementResource.add(statementDetail).subscribe(System.out::println);
             logger.info(String.format("Statement %s Added", statementDetail.getDocumentId()));
             return RepeatStatus.FINISHED;
@@ -96,4 +112,10 @@ public class JobConfiguration {
         JobExecution execution = jobLauncher.run(job(), param);
         System.out.println("Job finished with status :" + execution.getStatus());
     }
+
+    private LocalDate getDatesBetween(LocalDate startDate, LocalDate endDate) {
+        long randomDay = ThreadLocalRandom.current().nextLong(startDate.toEpochDay(), endDate.toEpochDay());
+        return LocalDate.ofEpochDay(randomDay);
+    }
 }
+

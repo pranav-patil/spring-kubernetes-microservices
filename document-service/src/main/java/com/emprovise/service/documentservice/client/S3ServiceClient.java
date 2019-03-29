@@ -11,9 +11,9 @@ import com.emprovise.service.documentservice.dto.DocumentDTO;
 
 @Component
 @FeignClient(value = "s3-service", fallbackFactory = FinanceServiceFallbackFactory.class)
-public interface FinanceServiceClient {
+public interface S3ServiceClient {
 
-    @RequestMapping(value = "/rest/stock/symbol/{symbol}/interval/{interval}",
+    @RequestMapping(value = "/storage/s3/bucket/{bucketId}/object/{objectId}",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_VALUE
@@ -21,6 +21,6 @@ public interface FinanceServiceClient {
     DocumentDTO getObject(@PathVariable("bucketId") String bucketId,
                           @PathVariable("objectId") String objectId);
 
-    @RequestMapping("/rest/stock/info")
+    @RequestMapping("/storage/s3/info")
     String info();
 }

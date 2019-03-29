@@ -13,6 +13,7 @@ public class Statement {
     private String id;
     @Indexed(unique = true)
     private String documentId;
+    private String documentReference;
     private String payerId;
     private Boolean read;
     private Date date;
@@ -20,8 +21,9 @@ public class Statement {
     public Statement() {
     }
 
-    public Statement(String documentId, Date date) {
+    public Statement(String documentId, String documentReference, Date date) {
         this.documentId = documentId;
+        this.documentReference = documentReference;
         this.date = date;
     }
 
@@ -39,6 +41,14 @@ public class Statement {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
+    }
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
     }
 
     public String getPayerId() {

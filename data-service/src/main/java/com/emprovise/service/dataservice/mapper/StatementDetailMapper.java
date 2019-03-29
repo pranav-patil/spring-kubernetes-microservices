@@ -10,8 +10,8 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StatementDetailMapper {
 
-    StatementDetail mapToStockDetail(Statement statement);
+    StatementDetail mapToStatementDetail(Statement statement);
 
     @InheritInverseConfiguration
-    Statement mapToStock(StatementDetail userBean);
+    Statement mapToStatement(StatementDetail userBean);
 }

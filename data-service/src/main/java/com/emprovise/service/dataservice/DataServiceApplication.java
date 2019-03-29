@@ -29,7 +29,7 @@ public class DataServiceApplication {
     RouterFunction<?> routes(DealerStatementResource dealerStatementResource) {
 
         return nest(path("/statements"),
-                route(RequestPredicates.GET("/id/{id}"),
+                route(RequestPredicates.GET("/document/{id}"),
                         request -> ok().body(dealerStatementResource.findByDocumentId(request.pathVariable("id")), StatementDetail.class))
                 .andRoute(GET("/payer/{payerId}"),
                         request -> ok().body(dealerStatementResource.findByPayerId(request.pathVariable("payerId")), StatementDetail.class))

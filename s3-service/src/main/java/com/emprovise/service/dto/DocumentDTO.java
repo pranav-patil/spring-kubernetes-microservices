@@ -1,4 +1,4 @@
-package com.emprovise.service.documentservice.dto;
+package com.emprovise.service.dto;
 
 import org.apache.commons.codec.binary.Base64;
 

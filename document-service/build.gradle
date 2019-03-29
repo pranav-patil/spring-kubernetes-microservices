@@ -4,10 +4,15 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
+}
+
+plugins {
+	id "net.ltgt.apt" version "0.9"
 }
 
 apply plugin: 'java'
@@ -26,6 +31,7 @@ repositories {
 
 ext {
 	springCloudVersion = 'Finchley.RELEASE'
+	mapstructVersion = "1.2.0.Final"
 }
 
 dependencies {
@@ -36,11 +42,13 @@ dependencies {
 	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+	compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 	compile('commons-io:commons-io:2.6')
 	compile('com.google.code.gson:gson:2.8.4')
 	compile('org.slf4j:slf4j-api')
 	runtime('net.logstash.logback:logstash-logback-encoder:5.1')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 }
 
 dependencyManagement {

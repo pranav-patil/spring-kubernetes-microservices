@@ -24,7 +24,7 @@ services:
       - "9000:9000"
     hostname: minio
     volumes:
-      - data:/data
+      - data:/data/s3
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123

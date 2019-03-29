@@ -1,16 +1,13 @@
-package com.emprovise.service.dataservice.dto;
+package com.emprovise.service.documentservice.dto;
 
-import java.util.Date;
-
-public class StatementDetail {
+public class DealerStatementDTO {
 
     private String documentId;
-    private String documentReference;
     private String payerId;
     private Boolean read;
-    private Date date;
+    private String period;
 
-    public StatementDetail() {
+    public DealerStatementDTO() {
     }
 
     public String getDocumentId() {
@@ -19,14 +16,6 @@ public class StatementDetail {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
-    }
-
-    public String getDocumentReference() {
-        return documentReference;
-    }
-
-    public void setDocumentReference(String documentReference) {
-        this.documentReference = documentReference;
     }
 
     public String getPayerId() {
@@ -45,20 +34,21 @@ public class StatementDetail {
         this.read = read;
     }
 
-    public Date getDate() {
-        return date;
+    public String getPeriod() {
+        return period;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
     @Override
     public String toString() {
-        return "StatementDetail{" +
+        return "StatementDetailDTO{" +
                 "documentId='" + documentId + '\'' +
+                ", payerId='" + payerId + '\'' +
                 ", read=" + read +
-                ", date=" + date +
+                ", period='" + period + '\'' +
                 '}';
     }
 }

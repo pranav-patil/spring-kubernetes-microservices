@@ -5,6 +5,7 @@ import java.util.Date;
 public class StatementDetailDTO {
 
     private String documentId;
+    private String documentReference;
     private String payerId;
     private Boolean read;
     private Date date;
@@ -18,6 +19,14 @@ public class StatementDetailDTO {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
+    }
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
     }
 
     public String getPayerId() {
@@ -48,6 +57,8 @@ public class StatementDetailDTO {
     public String toString() {
         return "StatementDetailDTO{" +
                 "documentId='" + documentId + '\'' +
+                ", documentReference='" + documentReference + '\'' +
+                ", payerId='" + payerId + '\'' +
                 ", read=" + read +
                 ", date=" + date +
                 '}';
