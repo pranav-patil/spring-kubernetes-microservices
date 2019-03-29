@@ -45,7 +45,7 @@ public class JobConfiguration {
     @Autowired
     private DealerStatementResource dealerStatementResource;
 
-    private static List<String> FILE_NAMES = Arrays.asList("Feb2019.pdf", "Jan2019.pdf", "Jan2019V1.pdf");
+    private static List<String> FILE_NAMES = Arrays.asList("Feb2019.pdf", "Jan2019.pdf", "Jan2019V1.pdf", "InitechStatement.pdf");
     private static Logger logger = LoggerFactory.getLogger(JobConfiguration.class);
 
     @Bean
