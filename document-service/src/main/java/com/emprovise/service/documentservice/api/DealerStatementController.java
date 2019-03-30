@@ -55,6 +55,10 @@ public class DealerStatementController {
             InputStream inputStream = new ByteArrayInputStream(binaryDocument);
             IOUtils.copy(inputStream, response.getOutputStream());
             response.setHeader("Content-Disposition", "attachment; filename=" + objectId);
+
+            webClientBuilder.build().post().uri("http://data-service/statements/markread/{documentId}", documentId)
+                     .retrieve().bodyToMono(StatementDetailDTO.class).subscribe();
+
             response.getOutputStream().flush();
 
         }catch (Exception ex) {

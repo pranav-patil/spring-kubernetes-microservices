@@ -17,8 +17,8 @@ eureka:
 
 cloud:
   minio:
-    endpoint: http://192.168.84.82:9000
-    accessKey: admin
+    endpoint: http://10.141.130.18:9000
+    accessKey: minio
     secretKey: minio123
 
 ---

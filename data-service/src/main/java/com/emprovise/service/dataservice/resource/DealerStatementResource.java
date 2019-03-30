@@ -25,8 +25,8 @@ public class DealerStatementResource {
                                    .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
-    public Mono<StatementDetail> findByDocumentId(String name) {
-        return this.statementRepository.findByDocumentId(name)
+    public Mono<StatementDetail> findByDocumentId(String documentId) {
+        return this.statementRepository.findByDocumentId(documentId)
                                    .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
@@ -44,5 +44,12 @@ public class DealerStatementResource {
         Statement statement = statementDetailMapper.mapToStatement(statementDetail);
         return this.statementRepository.insert(statement)
                                    .map(stk -> statementDetailMapper.mapToStatementDetail(stk));
+    }
+
+    public Mono<StatementDetail> updateRead(String documentId, boolean read) {
+        return this.statementRepository.findByDocumentId(documentId).doOnSuccess(statement -> {
+                    statement.setRead(read);
+                    statementRepository.save(statement).subscribe();
+                }).map(statementDetailMapper::mapToStatementDetail);
     }
 }
