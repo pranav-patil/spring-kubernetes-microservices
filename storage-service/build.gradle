@@ -1,5 +1,5 @@
 
-description = "S3 services"
+description = "File Storage Service"
 
 buildscript {
 	ext {

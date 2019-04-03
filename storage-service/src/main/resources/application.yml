@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: s3-service
+    name: storage-service
 
 eureka:
   client:
@@ -28,7 +28,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://discovery-service:8302/eureka
+      defaultZone: http://eureka-service:8302/eureka
   instance:
     preferIpAddress: true
 

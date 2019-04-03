@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.emprovise.service.documentservice.dto.DocumentDTO;
 
 @Component
-@FeignClient(value = "s3-service", fallbackFactory = FinanceServiceFallbackFactory.class)
-public interface S3ServiceClient {
+@FeignClient(value = "storage-service", fallbackFactory = FinanceServiceFallbackFactory.class)
+public interface StorageServiceClient {
 
-    @RequestMapping(value = "/storage/s3/bucket/{bucketId}/object/{objectId}",
+    @RequestMapping(value = "/storage/bucket/{bucketId}/object/{objectId}",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_VALUE
@@ -21,6 +21,6 @@ public interface S3ServiceClient {
     DocumentDTO getObject(@PathVariable("bucketId") String bucketId,
                           @PathVariable("objectId") String objectId);
 
-    @RequestMapping("/storage/s3/info")
+    @RequestMapping("/storage/info")
     String info();
 }

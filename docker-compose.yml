@@ -14,7 +14,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin123
       MONGO_INITDB_DATABASE: testdb
     volumes:
-      - ./data-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./metadata-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 #      - /tmp/data/mongo:/data/db
 
   minio-service:
@@ -45,9 +45,9 @@ services:
         max-size: "10m"
         max-file: "10"
 
-  s3-service:
-    container_name: s3-service
-    build: ./s3-service
+  storage-service:
+    container_name: storage-service
+    build: ./storage-service
     restart: always
     depends_on:
       - discovery-service
@@ -82,7 +82,7 @@ services:
     restart: always
     depends_on:
       - discovery-service
-      - s3-service
+      - storage-service
       - data-service
     ports:
       - "8301:8301"

@@ -13,8 +13,8 @@ import java.io.IOException;
 
 @EnableEurekaClient
 @RestController
-@RequestMapping("/storage/s3")
-public class S3Controller {
+@RequestMapping("/storage")
+public class StorageController {
 
     @Autowired
     private MinioService minioService;
@@ -31,6 +31,6 @@ public class S3Controller {
 
     @GetMapping("/info")
     public String info() {
-        return "Hello This is mock S3 service.";
+        return "Hello This is mock storage service.";
     }
 }

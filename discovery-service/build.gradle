@@ -1,5 +1,5 @@
 
-description = "Spring Commons Logging Bridge"
+description = "Discovery Service"
 
 buildscript {
 	ext {

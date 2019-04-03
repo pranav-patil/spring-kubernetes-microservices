@@ -104,7 +104,7 @@ public class JobConfiguration {
             return RepeatStatus.FINISHED;
         };
     }
-    
+
     @Scheduled(cron = "0 */5 * ? * *")
     public void jobRunner() throws Exception {
         JobParameters param = new JobParametersBuilder()

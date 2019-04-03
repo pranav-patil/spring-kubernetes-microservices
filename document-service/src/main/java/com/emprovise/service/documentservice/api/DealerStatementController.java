@@ -1,6 +1,6 @@
 package com.emprovise.service.documentservice.api;
 
-import com.emprovise.service.documentservice.client.S3ServiceClient;
+import com.emprovise.service.documentservice.client.StorageServiceClient;
 import com.emprovise.service.documentservice.dto.DealerStatementDTO;
 import com.emprovise.service.documentservice.dto.DocumentDTO;
 import com.emprovise.service.documentservice.dto.StatementDetailDTO;
@@ -31,7 +31,7 @@ import java.time.Duration;
 public class DealerStatementController {
 
     @Autowired
-    private S3ServiceClient s3ServiceClient;
+    private StorageServiceClient storageServiceClient;
     @Autowired
     private WebClient.Builder webClientBuilder;
     @Autowired
@@ -44,19 +44,19 @@ public class DealerStatementController {
 
         try {
             Mono<StatementDetailDTO> detailDTOMono = webClientBuilder.build()
-                    .get().uri("http://data-service/statements/document/{documentId}", documentId)
+                    .get().uri("http://metadata-service/statements/document/{documentId}", documentId)
                     .retrieve().bodyToMono(StatementDetailDTO.class);
 
             StatementDetailDTO statementDetailDTO = detailDTOMono.block(Duration.ofSeconds(2));
             objectId = statementDetailDTO.getDocumentReference();
-            DocumentDTO documentDTO = s3ServiceClient.getObject("1234567", objectId);
+            DocumentDTO documentDTO = storageServiceClient.getObject("1234567", objectId);
             byte[] binaryDocument = documentDTO.getBinaryFile();
             response.setContentType(getFileContentType(objectId));
             InputStream inputStream = new ByteArrayInputStream(binaryDocument);
             IOUtils.copy(inputStream, response.getOutputStream());
             response.setHeader("Content-Disposition", "attachment; filename=" + objectId);
 
-            webClientBuilder.build().post().uri("http://data-service/statements/markread/{documentId}", documentId)
+            webClientBuilder.build().post().uri("http://metadata-service/statements/markread/{documentId}", documentId)
                      .retrieve().bodyToMono(StatementDetailDTO.class).subscribe();
 
             response.getOutputStream().flush();
@@ -79,7 +79,7 @@ public class DealerStatementController {
     @GetMapping("/summary/bpId/{payerId}")
     public Flux<DealerStatementDTO> getDealerStatementSummary(@PathVariable String payerId) {
         Flux<StatementDetailDTO> statementDetailFlux = webClientBuilder.build()
-                                                            .get().uri("http://data-service/statements/payer/{payerId}", payerId)
+                                                            .get().uri("http://metadata-service/statements/payer/{payerId}", payerId)
                                                             .retrieve().bodyToFlux(StatementDetailDTO.class);
 
         Flux<DealerStatementDTO> dealerStatementDTOFlux = statementDetailFlux.map(dealerStatementDTOMapper::mapToDealerStatementDTO);
@@ -92,6 +92,6 @@ public class DealerStatementController {
 
     @GetMapping("/info")
     public String info() {
-        return s3ServiceClient.info();
+        return storageServiceClient.info();
     }
 }

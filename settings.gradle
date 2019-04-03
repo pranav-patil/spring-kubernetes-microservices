@@ -1,6 +1,6 @@
-rootProject.name = 'spring-kube-services'
+rootProject.name = 'spring-kubernetes-microservices'
 
 include "discovery-service"
-include "s3-service"
+include "storage-service"
 include "data-service"
 include "document-service"

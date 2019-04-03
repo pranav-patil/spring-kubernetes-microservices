@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FinanceServiceFallbackFactory implements FallbackFactory<S3ServiceClientFallback> {
+public class FinanceServiceFallbackFactory implements FallbackFactory<StorageServiceClientFallback> {
 
     @Autowired
-    private S3ServiceClientFallback financeServiceClientFallback;
+    private StorageServiceClientFallback financeServiceClientFallback;
     private static Logger logger = LoggerFactory.getLogger(FinanceServiceFallbackFactory.class);
 
     @Override
-    public S3ServiceClientFallback create(Throwable cause) {
+    public StorageServiceClientFallback create(Throwable cause) {
 
         if(!(cause instanceof RuntimeException && cause.getMessage() == null)) {
-            logger.error("S3ServiceClient failed, switching to S3ServiceClientFallback", cause);
+            logger.error("StorageServiceClient failed, switching to StorageServiceClientFallback", cause);
         }
         return financeServiceClientFallback;
     }

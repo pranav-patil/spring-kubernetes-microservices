@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class S3ServiceApplicationTests {
+public class StorageServiceApplicationTests {
 
 	@Test
 	public void contextLoads() {
