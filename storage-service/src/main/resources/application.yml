@@ -25,13 +25,6 @@ cloud:
 spring:
   profiles: production
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka-service:8302/eureka
-  instance:
-    preferIpAddress: true
-
 cloud:
   minio:
     endpoint: http://minio-service:9000

@@ -37,11 +37,3 @@ spring:
       database: testdb
       username: appuser
       password: test123
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka-service:8302/eureka
-  instance:
-    preferIpAddress: true
-

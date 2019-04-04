@@ -30,10 +30,3 @@ hystrix:
 ---
 spring:
   profiles: production
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka-service:8302/eureka
-  instance:
-    preferIpAddress: true
