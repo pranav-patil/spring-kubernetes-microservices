@@ -1,7 +1,4 @@
 
-server:
-  port: 8300
-
 spring:
   application:
     name: data-service
@@ -17,6 +14,9 @@ spring:
       password:
   batch:
     initialize-schema: always
+
+server:
+  port: 8300
 
 eureka:
   client:

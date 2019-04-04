@@ -14,7 +14,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin123
       MONGO_INITDB_DATABASE: testdb
     volumes:
-      - ./metadata-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 #      - /tmp/data/mongo:/data/db
 
   minio-service:

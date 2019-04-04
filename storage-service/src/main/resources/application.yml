@@ -1,10 +1,10 @@
 
-server:
-  port: 8309
-
 spring:
   application:
     name: storage-service
+
+server:
+  port: 8309
 
 eureka:
   client:
