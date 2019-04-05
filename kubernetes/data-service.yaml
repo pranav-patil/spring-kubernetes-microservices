@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-service
+  labels:
+    app: data-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-service
+  template:
+    metadata:
+      labels:
+        app: data-service
+    spec:
+      containers:
+      - name: data-service
+        image: cloud.canister.io:5000/emprovise/data-service:1.0
+        ports:
+        - containerPort: 8300
+        env:
+        - name: MONGO_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb
+              key: database-name
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: database-user
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: database-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-service
+  labels:
+    app: data-service
+spec:
+  ports:
+  - port: 8300
+    protocol: TCP
+  selector:
+    app: data-service
