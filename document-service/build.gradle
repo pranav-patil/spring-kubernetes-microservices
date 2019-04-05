@@ -35,13 +35,20 @@ ext {
 }
 
 dependencies {
+
+	if (isProd) {
+		compile('org.springframework.cloud:spring-cloud-starter-kubernetes:1.0.1.RELEASE')
+		compile('org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon:1.0.1.RELEASE')
+	} else {
+		compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+		compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+	}
+
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
-	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
-	compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
 	compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 	compile('commons-io:commons-io:2.6')
 	compile('com.google.code.gson:gson:2.8.4')

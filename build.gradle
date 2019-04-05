@@ -11,6 +11,12 @@ allprojects {
   }
 }
 
+// define extra properties for the project object (project.ext)
+ext {
+    profile = project.hasProperty('profile') ? project.property('profile') : System.setProperty("spring.profiles.active", "local")
+    isProd = profile == "production"
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'

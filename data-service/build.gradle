@@ -37,11 +37,18 @@ ext {
 }
 
 dependencies {
+
+	if (isProd) {
+		compile('org.springframework.cloud:spring-cloud-starter-kubernetes:1.0.1.RELEASE')
+		compile('org.springframework.cloud:spring-cloud-starter-kubernetes-ribbon:1.0.1.RELEASE')
+	} else {
+		compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	}
+
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('org.springframework.boot:spring-boot-starter-batch')
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 	compile "org.mapstruct:mapstruct-jdk8:${mapstructVersion}"
 	compile('org.slf4j:slf4j-api')
 	runtime('net.logstash.logback:logstash-logback-encoder:5.1')
