@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: data-service
-        image: cloud.canister.io:5000/emprovise/data-service:1.0
+        image: cloud.canister.io:5000/emprovise/data-service:latest
         ports:
         - containerPort: 8300
         env:

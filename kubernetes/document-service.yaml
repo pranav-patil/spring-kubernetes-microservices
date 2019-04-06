@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: document-service
-        image: cloud.canister.io:5000/emprovise/document-service:1.0
+        image: cloud.canister.io:5000/emprovise/document-service:latest
         ports:
         - containerPort: 8301
 ---
