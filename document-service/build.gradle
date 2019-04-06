@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.4.RELEASE'
+		springBootVersion = '2.1.4.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-	id "net.ltgt.apt" version "0.9"
+	id "net.ltgt.apt" version "0.19"
 }
 
 apply plugin: 'java'
