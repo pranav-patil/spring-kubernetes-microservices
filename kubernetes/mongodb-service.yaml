@@ -12,15 +12,26 @@ metadata:
   name: mongodb
 type: Opaque
 data:
-  database-user: YXBwdXNlcg==
-  database-password: dGVzdDEyMw==
+  database-user: YWRtaW4=
+  database-password: YWRtaW4xMjM=
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mongo-initdb
-dataFromFile: ./scripts/create-mongo-user.js
+data:
+  create-user.js: |
+    if (!db.getUser('appuser')) {
+     db.createUser({
+       user:  'appuser',
+       pwd: 'test123',
+       roles: [{
+         role: 'readWrite',
+         db: 'testdb'
+       }]
+     });
+    }
 ---
 
 apiVersion: apps/v1
