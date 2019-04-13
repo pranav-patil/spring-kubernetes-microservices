@@ -1,3 +1,32 @@
+# Refer https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/minio.html
+# Create Minio Storage class
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: miniosc
+provisioner: Kubernetes.io/vsphere-volume
+parameters:
+    diskformat: thin
+---
+# Create Minio headless Service. It controls the domain within which StatefulSets are created.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  labels:
+    app: minio
+spec:
+  clusterIP: None
+  ports:
+    - port: 9000
+      name: minio
+  selector:
+    app: minio
+---
+# Create Minio StatefulSet. It provides a deterministic name and a unique identity to each pod, making it easy to deploy stateful distributed applications. To launch distributed Minio user need to pass drive locations as parameters to the minio server command. Then the user need to run the same command on all the participating pods. StatefulSets offer a perfect way to handle this requirement.
+
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -47,3 +76,18 @@ spec:
       resources:
         requests:
           storage: 5Gi
+
+---
+# Create minio service using NodePort exposing it to external traffic
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-service
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      nodePort: 30000
+  selector:
+    app: minio
