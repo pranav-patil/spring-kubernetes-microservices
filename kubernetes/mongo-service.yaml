@@ -12,8 +12,15 @@ metadata:
   name: mongodb
 type: Opaque
 data:
-  database-password: YXBwdXNlcg==
-  database-user: dGVzdDEyMw==
+  database-user: YXBwdXNlcg==
+  database-password: dGVzdDEyMw==
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-initdb
+dataFromFile: ./scripts/create-mongo-user.js
 ---
 
 apiVersion: apps/v1
@@ -53,16 +60,26 @@ spec:
             secretKeyRef:
               name: mongodb
               key: database-password
+        volumeMounts:
+        - name: mongo-initdb
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mongo-initdb
+        configMap:
+          name: mongo-initdb
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: mongodb-service
   labels:
     app: mongodb
 spec:
+  type: NodePort
   ports:
   - port: 27017
     protocol: TCP
+    nodePort: 32241
   selector:
     app: mongodb
