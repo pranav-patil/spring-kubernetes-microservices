@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: data-service
-        image: cloud.canister.io:5000/emprovise/data-service:latest
+        image: docker.registry.com:5000/data-service:latest
         ports:
         - containerPort: 8300
         env:
@@ -35,6 +35,8 @@ spec:
             secretKeyRef:
               name: mongodb
               key: database-password
+      imagePullSecrets:
+      - name: regcred
 ---
 apiVersion: v1
 kind: Service
