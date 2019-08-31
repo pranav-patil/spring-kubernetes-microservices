@@ -21,6 +21,9 @@ cloud:
     accessKey: minio
     secretKey: minio123
 
+logstash:
+  host: localhost
+
 ---
 spring:
   profiles: production
@@ -30,4 +33,7 @@ cloud:
     endpoint: http://minio-service:9000
     accessKey: minio
     secretKey: minio123
+
+logstash:
+  host: logstash-service
 

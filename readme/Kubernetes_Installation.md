@@ -65,3 +65,7 @@ The kubeadm join command is executed on the worker nodes to allow them to join t
 the kubeadm init command on the master node.
 
     $ sudo kubeadm join <master-node-ip-address>:6443 --token <master-token> --discovery-token-ca-cert-hash <master-token-hash>
+
+### IMPORTANT NOTE
+
+*  It is very important that all the nodes configured in kubernetes cluster must reside in the same network (subnet) and accessible by their hardware IP address instead of virtual or floating IP address.

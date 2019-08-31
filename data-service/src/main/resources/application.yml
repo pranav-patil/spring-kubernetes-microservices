@@ -27,6 +27,9 @@ eureka:
   instance:
     hostname: localhost
 
+logstash:
+  host: localhost
+
 ---
 spring:
   profiles: production
@@ -37,3 +40,6 @@ spring:
       database: testdb
       username: appuser
       password: test123
+
+logstash:
+  host: logstash-service

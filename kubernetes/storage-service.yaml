@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: storage-service
-        image: cloud.canister.io:5000/emprovise/storage-service:latest
+        image: docker.registry.com:5000/storage-service:latest
         ports:
         - containerPort: 8309
         env:
@@ -35,6 +35,8 @@ spec:
             secretKeyRef:
               name: mongodb
               key: database-password
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service

@@ -97,3 +97,8 @@ Use the username `admin` and password `docker123` used for generating http passw
     $ sudo docker tag data-service docker.registry.com:5000/data-service:latest
     $ sudo docker login docker.registry.com:5000
     $ sudo docker push docker.registry.com:5000/data-service
+    
+To delete docker image from the private `docker.registry.com` registry use below command.
+    
+    $ sudo docker rmi docker.registry.com:5000/data-service
+
