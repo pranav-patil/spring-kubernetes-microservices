@@ -26,6 +26,16 @@ Optionally **spring.profiles.active** can be passed with value **production** wh
     $ java -jar data-service/build/libs/data-service-0.0.1-SNAPSHOT.jar
 		   -Dspring.profiles.active=production
 
+### Running Data Service on Kubernetes
+
+First setup the mongodb-service which is required for running the data-service.
+
+    $ kubectl apply -f mongodb-service.yaml
+
+Launch the data-service using below command.
+
+    $ kubectl apply -f minio-service.yaml
+    
 ### Notes
 
 * [Install MongoDB Shell](/../readme/Mongo_Shell.md) to view the collections and records within MongoDB database. 

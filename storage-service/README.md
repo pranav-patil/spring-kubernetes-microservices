@@ -10,3 +10,9 @@ Optionally **spring.profiles.active** can be passed with value **production** wh
 
     $ java -jar storage-service/build/libs/storage-service-0.0.1-SNAPSHOT.jar
 		   -Dspring.profiles.active=production
+
+### Running Storage Service on Kubernetes
+
+Storage service requires minio-service to store and fetch docments from Minio Server. Once minio-service is running, launch storage-service using below command.
+
+    $ kubectl apply -f storage-service.yaml

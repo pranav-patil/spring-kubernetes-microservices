@@ -10,3 +10,10 @@ Optionally **spring.profiles.active** can be passed with value **production** wh
 
     $ java -jar document-service/build/libs/document-service-0.0.1-SNAPSHOT.jar
 		   -Dspring.profiles.active=production
+
+### Running Document Service on Kubernetes
+
+First setup data-service and storage-service which is prerequisite for running document-service. 
+Once data-service and storage-service are running, launch document-service using below command.
+
+    $ kubectl apply -f document-service.yaml

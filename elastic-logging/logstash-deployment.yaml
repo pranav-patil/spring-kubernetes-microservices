@@ -10,6 +10,10 @@ data:
   logstash.conf: |
     # all input will come from filebeat, no local logs
     input {
+      tcp {
+        port => 4560
+        codec => json_lines
+      }
       beats {
         port => 5044
       }
@@ -29,6 +33,7 @@ data:
     output {
         elasticsearch {
             hosts => [ "elasticsearch-logging:9200" ]
+            index => "micro-services-logs"
         }
     }
 ---

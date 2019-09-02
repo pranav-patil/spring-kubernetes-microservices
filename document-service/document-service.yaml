@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: document-service
-        image: cloud.canister.io:5000/emprovise/document-service:latest
+        image: docker.registry.com:5000//document-service:latest
         ports:
         - containerPort: 8301
+      imagePullSecrets:
+        - name: regcred
 ---
 apiVersion: v1
 kind: Service
