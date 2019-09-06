@@ -13,7 +13,15 @@ Optionally **spring.profiles.active** can be passed with value **production** wh
 
 ### Running Document Service on Kubernetes
 
-First setup data-service and storage-service which is prerequisite for running document-service. 
-Once data-service and storage-service are running, launch document-service using below command.
+First setup [data-service](/../data-service/README.md) and [storage-service](/../storage-service/README.md) which is prerequisite for running document-service.
+ 
+Then create a docker image for document-service, tagging it with name document-service, and push the image to [docker registry](/../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
+
+    $ sudo docker build --tag=document-service document-service
+    $ sudo docker tag document-service docker.registry.com:5000/document-service:latest
+    $ sudo docker login docker.registry.com:5000
+    $ sudo docker push docker.registry.com:5000/document-service
+    
+If data-service and storage-service are running then deploy and launch document-service using below command.
 
     $ kubectl apply -f document-service.yaml

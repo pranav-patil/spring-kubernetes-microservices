@@ -107,11 +107,11 @@ Create all the RBAC permissions, add them to the deployment, and then set a defa
 
 For convenience, have copied all the YAML deployment files in minio-service, so that we can directly execute the below commands. Although before update the NFS_SERVER value with IP Address of NFS Server in `deployment.yaml`.
 
-    $ kubectl apply -f deployment.yaml
-    $ kubectl apply -f class.yaml
-    $ kubectl create -f clusterrole.yaml
-    $ kubectl create -f clusterrolebinding.yaml
-    $ kubectl create -f rbac.yaml
+    $ kubectl apply -f nfs-provisioner-deployment.yaml
+    $ kubectl apply -f nfs-provisioner-class.yaml
+    $ kubectl create -f nfs-provisioner-clusterrole.yaml
+    $ kubectl create -f nfs-provisioner-clusterrolebinding.yaml
+    $ kubectl create -f nfs-provisioner-rbac.yaml
     $ kubectl patch deployment nfs-client-provisioner -p '{"spec":{"template":{"spec":{"serviceAccount":"nfs-client-provisioner"}}}}'
     $ kubectl patch storageclass managed-nfs-storage -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
@@ -135,4 +135,17 @@ To debug various NFS issues and check the mount command outputs on the worker no
  
 ### Minio Service Kubernetes Installation
 
-    $ kubectl apply -f minio-service.yaml
+Using the below commands a [Standalone MiniO server](https://github.com/minio/minio/tree/master/docs/orchestration/kubernetes#minio-standalone-server-deployment) is deployed on Kubernetes.
+The `minio-pvc.yaml` creates a PersistentVolumeClaim which is used to request persistent storage for the MinIO instance tpo store objects.
+Kubernetes looks out for PVs matching the PVC request in the cluster and binds it to the PVC automatically. 
+Once the PersistentVolumeClaim is created, execute the `minio-deployment.yaml` to deploy mino-server onto a pod.
+Finally a minio-service is created which can be access using the NodePort 32250. 
+
+    $ kubectl create -f minio-pvc.yaml
+    $ kubectl create -f minio-deployment.yaml
+    $ kubectl create -f minio-service.yaml
+
+Minio Service can be access using the below URL, were user id is `minio` and password is `minio123`.
+
+    http://<node-ip-address>:32250/minio/
+

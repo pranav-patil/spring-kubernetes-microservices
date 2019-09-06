@@ -5,10 +5,16 @@ Spring Kubernetes Micro Services is a showcase application which uses the new [S
 The application provides services to fetch the generated report documents using [Spring Batch](https://spring.io/projects/spring-batch) and stored on a [Minio cloud storage](https://min.io/).
 The application has below services.
 
-* [Discovery Service](discovery-service/README.md): Eureka discovery service allows micro services to find and communicate with each other.
-* [Data Service](data-service/README.md): Data service provides reactive services using Spring WebFlux to store and fetch various report documents data.
-* [Storage Service](storage-service/README.md): Analytics services consume data from various sources, mainly finance-service and data-service and provide analytical details regarding the 
-* [Document Service](document-service/README.md): Analytics services consume data from various sources, mainly finance-service and data-service and provide analytical details regarding the
+* [Discovery Service](discovery-service/README.md): Eureka discovery service allows micro services to find and communicate with each other for local testing. Kubernetes uses [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) for service discovery.
+* [Data Service](data-service/README.md): Data service provides reactive services using Spring WebFlux to store and fetch report document data.
+* [Minio Service](minio-service/README.md):  Minio service provides private cloud storage services to store and fetch files.
+* [Storage Service](storage-service/README.md): Storage services provide service to fetch files using object id and bucket. 
+* [Document Service](document-service/README.md): Document service exposes services to get list of reports for the user and download them using document id. 
+* [Elastic Logging](elastic-logging/README.md): ElasticSearch-Beats-Logstash-Kibana provides log storage and management.
+
+
+   ![Spring Kubernetes Microservices Design](readme/images/spring-kubernetes-microservices.png)
+
 
 Follow the below documentation in order to setup this application using Kubernetes.
 

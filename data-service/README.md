@@ -32,9 +32,16 @@ First setup the mongodb-service which is required for running the data-service.
 
     $ kubectl apply -f mongodb-service.yaml
 
-Launch the data-service using below command.
+Then create a docker image for data-service, tagging it with name data-service, and push the image to [docker registry](/../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
 
-    $ kubectl apply -f minio-service.yaml
+    $ sudo docker build --tag=data-service data-service
+    $ sudo docker tag data-service docker.registry.com:5000/data-service:latest
+    $ sudo docker login docker.registry.com:5000
+    $ sudo docker push docker.registry.com:5000/data-service
+    
+Finally deploy and create the data-service using below command.
+
+    $ kubectl apply -f data-service.yaml
     
 ### Notes
 

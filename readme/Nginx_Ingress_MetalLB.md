@@ -1,6 +1,5 @@
-# Kubernetes Bare Metal Solutions 
+# Metal Load Balancer for Bare Metal Kubernetes
 
-### Metal Load Balancer
 Load balancers are available on-demand on cloud environments and a single Kubernetes manifest suffices to provide a single point of contact to the [NGINX Ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/) to external clients and, indirectly, to any application running inside the cluster. 
 Bare-metal environments lack this commodity, requiring a slightly different setup to offer the same kind of access to external consumers. MetalLB provides a network load-balancer implementation for Kubernetes clusters that do not run on a supported cloud provider, effectively allowing the usage of LoadBalancer Services within any cluster.
 [MetalLB](https://metallb.universe.tf/) hooks into the Kubernetes cluster, and provides a network load-balancer implementation thus allowing to create Kubernetes services of type `LoadBalancer` in clusters that don't run on a cloud provider.
