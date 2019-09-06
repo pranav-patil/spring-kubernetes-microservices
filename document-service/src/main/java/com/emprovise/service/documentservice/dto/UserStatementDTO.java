@@ -1,13 +1,13 @@
 package com.emprovise.service.documentservice.dto;
 
-public class DealerStatementDTO {
+public class UserStatementDTO {
 
     private String documentId;
-    private String payerId;
+    private String userId;
     private Boolean read;
     private String period;
 
-    public DealerStatementDTO() {
+    public UserStatementDTO() {
     }
 
     public String getDocumentId() {
@@ -18,12 +18,12 @@ public class DealerStatementDTO {
         this.documentId = documentId;
     }
 
-    public String getPayerId() {
-        return payerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPayerId(String payerId) {
-        this.payerId = payerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Boolean getRead() {
@@ -46,7 +46,7 @@ public class DealerStatementDTO {
     public String toString() {
         return "StatementDetailDTO{" +
                 "documentId='" + documentId + '\'' +
-                ", payerId='" + payerId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", read=" + read +
                 ", period='" + period + '\'' +
                 '}';

@@ -1,10 +1,10 @@
 package com.emprovise.service.documentservice.api;
 
 import com.emprovise.service.documentservice.client.StorageServiceClient;
-import com.emprovise.service.documentservice.dto.DealerStatementDTO;
+import com.emprovise.service.documentservice.dto.UserStatementDTO;
 import com.emprovise.service.documentservice.dto.DocumentDTO;
 import com.emprovise.service.documentservice.dto.StatementDetailDTO;
-import com.emprovise.service.documentservice.mapper.DealerStatementDTOMapper;
+import com.emprovise.service.documentservice.mapper.UserStatementDTOMapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -28,17 +28,17 @@ import java.time.Duration;
 @EnableEurekaClient
 @RestController
 @RequestMapping("/cloud/services/statement")
-public class DealerStatementController {
+public class UserStatementController {
 
     @Autowired
     private StorageServiceClient storageServiceClient;
     @Autowired
     private WebClient.Builder webClientBuilder;
     @Autowired
-    private DealerStatementDTOMapper dealerStatementDTOMapper;
+    private UserStatementDTOMapper userStatementDTOMapper;
 
     @GetMapping("/id/{documentId}")
-    public void getDealerStatement(@PathVariable String documentId, HttpServletResponse response) throws Exception {
+    public void getUserStatement(@PathVariable String documentId, HttpServletResponse response) throws Exception {
 
         String objectId = "error";
 
@@ -76,17 +76,17 @@ public class DealerStatementController {
         return fileTypeMap.getContentType(fileName);
     }
 
-    @GetMapping("/summary/bpId/{payerId}")
-    public Flux<DealerStatementDTO> getDealerStatementSummary(@PathVariable String payerId) {
+    @GetMapping("/summary/userId/{userId}")
+    public Flux<UserStatementDTO> getUserStatementSummary(@PathVariable String userId) {
         Flux<StatementDetailDTO> statementDetailFlux = webClientBuilder.build()
-                                                            .get().uri("http://data-service/statements/payer/{payerId}", payerId)
+                                                            .get().uri("http://data-service/statements/user/{userId}", userId)
                                                             .retrieve().bodyToFlux(StatementDetailDTO.class);
 
-        Flux<DealerStatementDTO> dealerStatementDTOFlux = statementDetailFlux.map(dealerStatementDTOMapper::mapToDealerStatementDTO);
+        Flux<UserStatementDTO> userStatementDTOFlux = statementDetailFlux.map(userStatementDTOMapper::mapToUserStatementDTO);
 
-        return HystrixCommands.from(dealerStatementDTOFlux)
-                                .fallback(Flux.just(new DealerStatementDTO()))
-                                .commandName("getDealerStatementSummary")
+        return HystrixCommands.from(userStatementDTOFlux)
+                                .fallback(Flux.just(new UserStatementDTO()))
+                                .commandName("getUserStatementSummary")
                                 .toFlux();
     }
 

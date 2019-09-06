@@ -10,13 +10,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class DealerStatementResource {
+public class UserStatementResource {
 
     @Autowired
     private StatementDetailMapper statementDetailMapper;
     private final StatementRepository statementRepository;
 
-    DealerStatementResource(StatementRepository statementRepository) {
+    UserStatementResource(StatementRepository statementRepository) {
         this.statementRepository = statementRepository;
     }
 
@@ -30,8 +30,8 @@ public class DealerStatementResource {
                                    .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 
-    public Flux<StatementDetail> findByPayerId(String name) {
-        return this.statementRepository.findByPayerId(name)
+    public Flux<StatementDetail> findByUserId(String name) {
+        return this.statementRepository.findByUserId(name)
                                    .map(statement -> statementDetailMapper.mapToStatementDetail(statement));
     }
 

@@ -8,5 +8,5 @@ import reactor.core.publisher.Mono;
 public interface StatementRepository extends ReactiveMongoRepository<Statement, String> {
 
     Mono<Statement> findByDocumentId(final String documentId);
-    Flux<Statement> findByPayerId(final String payerId);
+    Flux<Statement> findByUserId(final String userId);
 }

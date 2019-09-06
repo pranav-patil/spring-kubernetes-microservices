@@ -14,7 +14,7 @@ public class Statement {
     @Indexed(unique = true)
     private String documentId;
     private String documentReference;
-    private String payerId;
+    private String userId;
     private Boolean read;
     private Date date;
 
@@ -51,12 +51,12 @@ public class Statement {
         this.documentReference = documentReference;
     }
 
-    public String getPayerId() {
-        return payerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPayerId(String payerId) {
-        this.payerId = payerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Boolean getRead() {

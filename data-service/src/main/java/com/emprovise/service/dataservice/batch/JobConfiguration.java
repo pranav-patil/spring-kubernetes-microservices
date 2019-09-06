@@ -1,7 +1,7 @@
 package com.emprovise.service.dataservice.batch;
 
 import com.emprovise.service.dataservice.dto.StatementDetail;
-import com.emprovise.service.dataservice.resource.DealerStatementResource;
+import com.emprovise.service.dataservice.resource.UserStatementResource;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +23,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 @Configuration
 @EnableBatchProcessing
@@ -43,7 +41,7 @@ public class JobConfiguration {
     @Autowired
     private SimpleJobLauncher jobLauncher;
     @Autowired
-    private DealerStatementResource dealerStatementResource;
+    private UserStatementResource userStatementResource;
 
     private static List<String> FILE_NAMES = Arrays.asList("StatementApril2019.pdf", "StatementMarch2019.pdf", "InitechStatement.pdf");
     private static Logger logger = LoggerFactory.getLogger(JobConfiguration.class);
@@ -94,12 +92,12 @@ public class JobConfiguration {
             Random random = new Random();
             int randomInt = random.ints(0, FILE_NAMES.size()).findFirst().getAsInt();
             statementDetail.setDocumentReference(FILE_NAMES.get(randomInt));
-            statementDetail.setPayerId("0040000002");
+            statementDetail.setUserId("0040000002");
 
             statementDetail.setRead(Boolean.FALSE);
             LocalDate randomDate = getDatesBetween(LocalDate.of(2018, 4, 15), LocalDate.of(2019, 3, 15));
             statementDetail.setDate(Date.from(randomDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            dealerStatementResource.add(statementDetail).subscribe(System.out::println);
+            userStatementResource.add(statementDetail).subscribe(System.out::println);
             logger.info(String.format("Statement %s Added", statementDetail.getDocumentId()));
             return RepeatStatus.FINISHED;
         };
