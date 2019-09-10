@@ -22,9 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -96,7 +94,7 @@ public class JobConfiguration {
 
             statementDetail.setRead(Boolean.FALSE);
             LocalDate randomDate = getDatesBetween(LocalDate.of(2018, 4, 15), LocalDate.of(2019, 3, 15));
-            statementDetail.setDate(Date.from(randomDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            statementDetail.setDateTime(randomDate.atStartOfDay());
             userStatementResource.add(statementDetail).subscribe(System.out::println);
             logger.info(String.format("Statement %s Added", statementDetail.getDocumentId()));
             return RepeatStatus.FINISHED;

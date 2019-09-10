@@ -20,20 +20,20 @@ spec:
         ports:
         - containerPort: 8300
         env:
-        - name: MONGO_DATABASE
+        - name: CASSANDRA_DATABASE
           valueFrom:
             configMapKeyRef:
-              name: mongodb
+              name: cassandra
               key: database-name
-        - name: MONGO_USERNAME
+        - name: CASSANDRA_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: cassandra
               key: database-user
-        - name: MONGO_PASSWORD
+        - name: CASSANDRA_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: cassandra
               key: database-password
       imagePullSecrets:
       - name: regcred

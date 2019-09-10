@@ -8,13 +8,13 @@ import org.mapstruct.*;
 public interface UserStatementDTOMapper {
 
     @Mappings({
-            @Mapping(target="period", source = "statement.date",
+            @Mapping(target="period", source = "statement.dateTime",
                     dateFormat = "MMM-yyyy")})
     UserStatementDTO mapToUserStatementDTO(StatementDetailDTO statement);
 
     @InheritInverseConfiguration
     @Mappings({
-            @Mapping(target="date", source = "statementDTO.period",
+            @Mapping(target="dateTime", source = "statementDTO.period",
                     dateFormat = "MMM-yyyy")})
     StatementDetailDTO mapToStatementDetailDTO(UserStatementDTO statementDTO);
 }

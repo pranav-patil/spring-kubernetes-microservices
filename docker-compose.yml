@@ -1,21 +1,68 @@
 version: '3.5'
 services:
 
-  mongodb-service:
-    container_name: mongodb-service
-    image: mongo:4.0
+  cassandra-service:
+    image: cassandra:3.11.4
+    container_name: cassandra-service
     ports:
-      - "27017:27017"
+      - 9042:9042   # Native transport
+      - 9160:9160   # Thrift clients
+      - 7199:7199   # JMX
+      - 8778:8778
     networks:
       - net
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin123
-      MONGO_INITDB_DATABASE: testdb
+      - CASSANDRA_START_RPC=true
+      - CASSANDRA_SEEDS=cassandra-service
+      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+      - CASSANDRA_ROOT_USERNAME=admin
+      - CASSANDRA_ROOT_PASSWORD=admin123
+      - CASSANDRA_INITDB_DATABASE=testdb
     volumes:
-      - ./data-service/config/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-#      - /tmp/data/mongo:/data/db
+      - ./data-service/cassandra-config/cassandra-init.sh:/cassandra-init.sh
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
+
+  cassandra1:
+    image: cassandra:3.11.1
+    container_name: cassandra1
+    ports:
+      - 9142:9042
+    networks:
+      - net
+    restart: always
+    command: bash -c 'sleep 60;  /docker-entrypoint.sh cassandra -f'
+    depends_on:
+      - cassandra-service
+    environment:
+      - CASSANDRA_SEEDS=cassandra-service
+      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
+
+  cassandra2:
+    image: cassandra:3.11.1
+    container_name: cassandra2
+    ports:
+      - 9242:9042
+    networks:
+      - net
+    restart: always
+    command: bash -c 'sleep 120;  /docker-entrypoint.sh cassandra -f'
+    depends_on:
+      - cassandra-service
+    environment:
+      - CASSANDRA_SEEDS=cassandra-service
+      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
 
   minio-service:
     container_name: minio-service
@@ -65,7 +112,7 @@ services:
     build: ./data-service
     restart: always
     depends_on:
-      - mongodb-service
+      - cassandra-service
       - discovery-service
     ports:
       - "8300:8300"

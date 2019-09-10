@@ -1,5 +1,6 @@
 package com.emprovise.service.documentservice.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class StatementDetailDTO {
@@ -8,7 +9,7 @@ public class StatementDetailDTO {
     private String documentReference;
     private String userId;
     private Boolean read;
-    private Date date;
+    private LocalDateTime dateTime;
 
     public StatementDetailDTO() {
     }
@@ -45,12 +46,12 @@ public class StatementDetailDTO {
         this.read = read;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class StatementDetailDTO {
                 ", documentReference='" + documentReference + '\'' +
                 ", userId='" + userId + '\'' +
                 ", read=" + read +
-                ", date=" + date +
+                ", dateTime=" + dateTime +
                 '}';
     }
 }

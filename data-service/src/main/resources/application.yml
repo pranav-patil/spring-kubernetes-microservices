@@ -3,10 +3,12 @@ spring:
   application:
     name: data-service
   data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: testdb
+    cassandra:
+      keyspace-name: testdb
+      contact-points: localhost
+      schema-action: CREATE_IF_NOT_EXISTS
+      port: 9042
+
     datasource:
       driver-class-name: org.h2.Driver
       url: jdbc:h2:mem:localhost;DB_CLOSE_ON_EXIT=FALSE
@@ -30,14 +32,15 @@ eureka:
 logstash:
   host: localhost
 
+cassandra:
+  basepackages: com.emprovise.service.dataservice
 ---
 spring:
   profiles: production
   data:
-    mongodb:
-      host: mongodb-service
-      port: 27017
-      database: testdb
+    cassandra:
+      contact-points: cassandra-service
+      port: 9042
       username: appuser
       password: test123
 
