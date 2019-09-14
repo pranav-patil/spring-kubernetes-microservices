@@ -55,7 +55,7 @@ dependencies {
 	compile('org.slf4j:slf4j-api')
 	runtime('net.logstash.logback:logstash-logback-encoder:5.1')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	apt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 }
 
 dependencyManagement {

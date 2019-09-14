@@ -12,8 +12,8 @@ Data service provides various services to save and fetch data from [Apache Cassa
 * Go to `CASSANDRA_HOME\bin` directory and execute the command `cassandra.bat` to run cassandra.
 * Cassandra runs on default port 9042.
 * To enabled Authentication for Cassandra database, open `conf/cassandra.yaml` configuration file and update the below properties with these values. 
-    * **authenticator: org.apache.cassandra.auth.PasswordAuthenticator**
-    * **authorizer: org.apache.cassandra.auth.CassandraAuthorizer**
+    * **authenticator: PasswordAuthenticator**
+    * **authorizer: CassandraAuthorizer**
 
 All the above steps can be executed directly by running below runCassandra gradle task for windows.
 

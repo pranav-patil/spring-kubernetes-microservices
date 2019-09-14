@@ -5,22 +5,28 @@ services:
     image: cassandra:3.11.4
     container_name: cassandra-service
     ports:
-      - 9042:9042   # Native transport
-      - 9160:9160   # Thrift clients
-      - 7199:7199   # JMX
-      - 8778:8778
+      - "9042:9042"   # Native transport
+      - "9160:9160"   # Thrift clients
+      - "7199:7199"   # JMX
+      - "8778:8778"
     networks:
       - net
     restart: always
+    command: "sh /cassandra-init.sh"
     environment:
-      - CASSANDRA_START_RPC=true
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-service
-      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+      - CASSANDRA_CONFIG=/tmp
+      - CASSANDRA_START_RPC=true
       - CASSANDRA_ROOT_USERNAME=admin
       - CASSANDRA_ROOT_PASSWORD=admin123
-      - CASSANDRA_INITDB_DATABASE=testdb
+      - CASSANDRA_APP_KEYSPACE=testdb
+      - CASSANDRA_APP_USERNAME=appuser
+      - CASSANDRA_APP_PASSWORD=test123
     volumes:
       - ./data-service/cassandra-config/cassandra-init.sh:/cassandra-init.sh
+      - ./data-service/cassandra-config/cassandra.yaml:/tmp/cassandra.yaml
+      - ./cassandra/n1data:/var/lib/cassandra
     ulimits:
       memlock: -1
       nproc: 32768
@@ -30,16 +36,20 @@ services:
     image: cassandra:3.11.1
     container_name: cassandra1
     ports:
-      - 9142:9042
+      - "9142:9042"
     networks:
       - net
     restart: always
-    command: bash -c 'sleep 60;  /docker-entrypoint.sh cassandra -f'
+    command: bash -c 'if [ -z "$$(ls -A /var/lib/cassandra/)" ] ; then sleep 60; fi && /docker-entrypoint.sh cassandra -f'
     depends_on:
       - cassandra-service
     environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-service
-      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+      - CASSANDRA_CONFIG=/tmp
+    volumes:
+      - ./data-service/cassandra-config/cassandra.yaml:/tmp/cassandra.yaml
+      - ./cassandra/n2data:/var/lib/cassandra
     ulimits:
       memlock: -1
       nproc: 32768
@@ -49,20 +59,34 @@ services:
     image: cassandra:3.11.1
     container_name: cassandra2
     ports:
-      - 9242:9042
+      - "9242:9042"
     networks:
       - net
     restart: always
-    command: bash -c 'sleep 120;  /docker-entrypoint.sh cassandra -f'
+    command: bash -c 'if [ -z "$$(ls -A /var/lib/cassandra/)" ] ; then sleep 120; fi && /docker-entrypoint.sh cassandra -f'
     depends_on:
       - cassandra-service
     environment:
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-service
-      - CASSANDRA_CLUSTER_NAME=mtech_cluster
+      - CASSANDRA_CONFIG=/tmp
+    volumes:
+      - ./data-service/cassandra-config/cassandra.yaml:/tmp/cassandra.yaml
+      - ./cassandra/n3data:/var/lib/cassandra
     ulimits:
       memlock: -1
       nproc: 32768
       nofile: 100000
+
+  portainer:
+    image: portainer/portainer
+    networks:
+      - net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer-data:/data
+    ports:
+      - "10001:9000"
 
   minio-service:
     container_name: minio-service
