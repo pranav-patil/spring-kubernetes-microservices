@@ -4,6 +4,16 @@ metadata:
   name: cassandra
 ---
 
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: cassandra-storage
+  namespace: cassandra
+provisioner: emprovise/nfs
+parameters:
+  archiveOnDelete: "false"
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -27,7 +37,7 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
         - name: cassandra
-          image: cassandra:3.11.4
+          image: gcr.io/google-samples/cassandra:v13
           imagePullPolicy: Always
           ports:
             - containerPort: 7000
@@ -71,12 +81,6 @@ spec:
               value: "Cassandra-Rack1"
             - name: CASSANDRA_ENDPOINT_SNITCH
               value: "GossipingPropertyFileSnitch"
-            - name: CASSANDRA_START_RPC
-              value: "true"
-            - name: CASSANDRA_LISTEN_ADDRESS
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -86,17 +90,23 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - 'if [[ $(nodetool status | grep $POD_IP) == *"UN"* ]]; then exit 0; else exit 1; fi'
+                - /ready-probe.sh
             initialDelaySeconds: 15
             timeoutSeconds: 5
           volumeMounts:
             - name: cassandra-data
-              mountPath: /var/lib/cassandra
-      volumes:
-        - name: cassandra-data
-          emptyDir: {}
-
+              mountPath: /cassandra_data
+  volumeClaimTemplates:
+    - metadata:
+        name: cassandra-data
+      spec:
+        accessModes: [ "ReadWriteMany" ]
+        storageClassName: cassandra-storage
+        resources:
+          requests:
+            storage: 1Gi
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -104,18 +114,9 @@ metadata:
   namespace: cassandra
   labels:
     app: cassandra
-  annotations:
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   clusterIP: None
   ports:
     - port: 9042
-      name: tcp-client
-    - port: 7000
-      name: tcp-intra-node
-    - port: 7001
-      name: tcp-tls-intra-node
-    - port: 7199
-      name: tcp-jmx
   selector:
     app: cassandra
