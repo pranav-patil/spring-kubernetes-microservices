@@ -33,7 +33,7 @@ services:
       nofile: 100000
 
   cassandra1:
-    image: cassandra:3.11.1
+    image: cassandra:3.11.4
     container_name: cassandra1
     ports:
       - "9142:9042"
@@ -56,7 +56,7 @@ services:
       nofile: 100000
 
   cassandra2:
-    image: cassandra:3.11.1
+    image: cassandra:3.11.4
     container_name: cassandra2
     ports:
       - "9242:9042"

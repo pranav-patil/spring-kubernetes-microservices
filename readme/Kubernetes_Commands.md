@@ -12,6 +12,14 @@ To Get the details of all the pods
 
     $ sudo kubectl get pods --all-namespaces -o wide
     
+To [forcefully delete](https://kubernetes.io/docs/tasks/run-application/force-delete-stateful-set-pod/) a StatefulSet pod without waiting for confirmation from the kubelet that the Pod has been terminated 
+
+    $ kubectl delete pods <pod-name> --grace-period=0 --force    
+    
+If the pod is still stuck on Unknown state use below command to remove pod from the cluster
+
+    $ kubectl patch pod <pod-name> -p '{"metadata":{"finalizers":null}}'   
+    
 To Get additional information about the specified pod
 
     $ kubectl describe pod <pod-name>
