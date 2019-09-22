@@ -69,3 +69,16 @@ Display addresses of the master and services
 Dump current cluster state to stdout
 
     $ kubectl cluster-info dump
+
+Show merged kubernetes configuration (kubeconfig settings).
+ 
+    $ kubectl config view
+
+List all the multiple clusters accessible with kubectl and check the current cluster context.
+
+    $ kubectl config get-contexts
+
+To switch to the specified cluster context from the multiple accessible clusters
+
+    $ kubectl config use-context <context-name>
+    
