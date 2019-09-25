@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  rules:
+  - host: test.kubernetes.com
+    http:
+      paths:
+      - backend:
+          serviceName: nginx-ingress
+          servicePort: 18080
+        path: /nginx_status
+        
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: app-ingress
+spec:
+  rules:
+  - host: test.kubernetes.com
+    http:
+      paths:
+      - backend:
+          serviceName: appsvc1
+          servicePort: 80
+        path: /app1
+      - backend:
+          serviceName: appsvc2
+          servicePort: 80
+        path: /app2
