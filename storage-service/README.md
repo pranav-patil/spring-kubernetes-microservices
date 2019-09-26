@@ -13,9 +13,9 @@ Optionally **spring.profiles.active** can be passed with value **production** wh
 
 ### Running Storage Service on Kubernetes
 
-Storage service requires [minio-service](/../minio-service/README.md) to store and fetch documents from Minio Server. 
+Storage service requires [minio-service](../minio-service/README.md) to store and fetch documents from Minio Server. 
 
-Create a docker image for storage-service, tagging it with name storage-service, and push the image to [docker registry](/../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
+Create a docker image for storage-service, tagging it with name storage-service, and push the image to [docker registry](../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
 
     $ sudo docker build --tag=storage-service storage-service
     $ sudo docker tag storage-service docker.registry.com:5000/storage-service:latest

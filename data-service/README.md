@@ -56,7 +56,7 @@ First setup the cassandra-service which is required for running the data-service
 
     $ kubectl apply -f cassandra-service.yaml
 
-Then create a docker image for data-service, tagging it with name data-service, and push the image to [docker registry](/../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
+Then create a docker image for data-service, tagging it with name data-service, and push the image to [docker registry](../readme/Docker_Registry.md). Login into docker registry using username `admin` and password `docker123`.
 
     $ sudo docker build --tag=data-service data-service
     $ sudo docker tag data-service docker.registry.com:5000/data-service:latest

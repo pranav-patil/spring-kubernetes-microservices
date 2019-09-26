@@ -23,6 +23,35 @@ An Ingress Resource object is a collection of rules for routing inbound traffic 
 The kind: Ingress dictates it is an Ingress Resource object. Ingress rules are created in same namespace where the services are deployed. The NGINX controller must be exposed for external access. 
 This is done using Service type: LoadBalancer or NodePort on the NGINX controller service.
 The default backend is a Service which handles all URL paths and hosts the NGINX controller.
+
+There are various [advanced ingress configuration](https://docs.giantswarm.io/guides/advanced-ingress-configuration/) which allows to aggregate several Ingress rules into a single Ingress definition, route to different services based on path (Path Based Fanout) and enable TLS/SSL pass through.
+The Ingress Controller also includes support for adding [basic or digest http authentication types](https://tools.ietf.org/html/rfc2617) to an Ingress rule.
+A `auth` file is created using `htpasswd` generator tool containing usernames and passwords per line, which is used to create a secret e.g. myauthsecret to be specified in below configuration.
+
+    apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+      name: <ingress-name>
+      annotations:
+        # type of authentication [basic|digest]
+        nginx.ingress.kubernetes.io/auth-type: basic
+        # name of the secret that contains the user/password definitions
+        nginx.ingress.kubernetes.io/auth-secret: myauthsecret
+        # message to display with an appropiate context why the authentication is required
+        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - foo"
+    
+
+An external service can be used to provide authentication with Ingress rule annotated with `nginx.ingress.kubernetes.io/auth-url` to indicate the URL where the HTTP request should be sent and `nginx.ingress.kubernetes.io/auth-method` to specify the HTTP method to use (GET or POST).
+To enable Cross-Origin Resource Sharing (CORS) in an Ingress rule add the annotation `ingress.kubernetes.io/enable-cors: "true"`.
+When the exposed URLs in the backend service differs from the specified path in the Ingress rule, then without URL rewrite any request will return 404. To circumvent this the `ingress.kubernetes.io/rewrite-target` annotation is used to alter the path expected by the service.
+The annotation `ingress.kubernetes.io/limit-connections` limit the number of concurrent connections allowed from a single IP address while the annotation `ingress.kubernetes.io/limit-rps` limit the number of connections that may be accepted from a given IP each second. 
+This can be used to mitigate [DDoS Attacks](https://www.nginx.com/blog/mitigating-ddos-attacks-with-nginx-and-nginx-plus).
+By default NGINX uses http to reach the services. Adding the annotation `nginx.ingress.kubernetes.io/secure-backends: "true"` in the Ingress rule changes the protocol to https.
+The annotation `nginx.ingress.kubernetes.io/affinity` enables and sets the affinity type in all upstreams of an Ingress, allowing the request to always be directed to the same upstream server.
+The allowed client IP source ranges can be configured using the `nginx.ingress.kubernetes.io/whitelist-source-range` annotation which takes the value as a comma separated list of CIDRs, e.g. 10.0.0.0/24,172.10.0.1.
+In order to support TLS, a certificate can be provided using the flag `--default-ssl-certificate`.
+The NGINX Ingress Controller creates an NGINX configuration file. Chunks of configuration, so-called configuration snippets can be directly passed into any ingress manifest, which would be added to the NGINX configuration.
+The annotation scheme `nginx.ingress.kubernetes.io/configuration-snippet` in the metadata section of the manifest allows to do the same.
  
    ![NGINX Ingress](images/nginx-ingress.png)
 
@@ -49,7 +78,7 @@ Create Ingress controller.
     
     $ kubectl create -f nginx-ingress-controller-deployment.yaml -n=ingress
     
-Define ingress object or Ingress rules for load balancer status page and web applications. The `nginx.ingress.kubernetes.io/rewrite-target: /` annotation redirects requests to the `/`.
+Define ingress object or Ingress rules for load balancer status page and web applications. The `nginx.ingress.kubernetes.io/rewrite-target: /` annotation currently redirects requests to the `/`.
 
     $ kubectl create -f nginx-ingress.yaml -n=ingress
     
@@ -60,3 +89,7 @@ Expose `nginx-ingress-lb` deployment for external access which is exposed using 
 Describe created ingress object to check the configurations.
 
     $ kubectl describe ingress  -n ingress
+
+### Notes
+
+* The [nginx-ingress.yaml](../ingress-controller/nginx-ingress.yaml) requires the DNS address of any kubernetes node which is accessible outside the cluster. 

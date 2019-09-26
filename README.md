@@ -11,6 +11,7 @@ The application has below services.
 * [Storage Service](storage-service/README.md): Storage services provide service to fetch files using object id and bucket. 
 * [Document Service](document-service/README.md): Document service exposes services to get list of reports for the user and download them using document id. 
 * [Elastic Logging](elastic-logging/README.md): ElasticSearch-Beats-Logstash-Kibana provides log storage and management.
+* [Ingress Controller](ingress-controller/README.md): Ingress controller is responsible for directing external traffic to corresponding Kubernetes service within the cluster.
 
 
    ![Spring Kubernetes Microservices Design](readme/images/spring-kubernetes-microservices.png)
